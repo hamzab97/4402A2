@@ -19,6 +19,34 @@ __global__ void minplus(int n, int* x, int *y)
 	}
 }
 
+
+/////////////////////////////////////
+// error checking routine
+/////////////////////////////////////
+void checkErrors(char *label)
+{
+  // we need to synchronise first to catch errors due to
+  // asynchroneous operations that would otherwise
+  // potentially go unnoticed
+
+  cudaError_t err;
+
+  err = cudaThreadSynchronize();
+  if (err != cudaSuccess)
+  {
+    char *e = (char*) cudaGetErrorString(err);
+    fprintf(stderr, "CUDA Error: %s (at %s)", e, label);
+  }
+
+  err = cudaGetLastError();
+  if (err != cudaSuccess)
+  {
+    char *e = (char*) cudaGetErrorString(err);
+    fprintf(stderr, "CUDA Error: %s (at %s)", e, label);
+  }
+}
+
+
 int main(void)
 {
   std::cout << "started " << '\n';
@@ -28,6 +56,8 @@ int main(void)
   b = (int*)malloc(N*sizeof(int));
   cudaMalloc((void**)&d_a, N*sizeof(int));
   cudaMalloc((void**)&d_b, N*sizeof(int));
+
+  checkErrors("memory allocation");
 
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++){
@@ -48,16 +78,20 @@ int main(void)
   cudaMemcpy(d_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
   cudaMemcpy(d_b, b, N*sizeof(int), cudaMemcpyHostToDevice);
 
+  checkErrors("copy data to device");
+
   std::cout << "called cuda" << '\n';
 
   // Perform minplus
   int numBlocks = (N+numThreadsPerBlock-1) / numThreadsPerBlock;
 	for (int i = 0; i < N; i++){
 		  minplus<<<numBlocks, numThreadsPerBlock>>>(N, d_a, d_b);
+      checkErrors("compute on device");
 	}
 
   int *h_z = (int*)malloc(N*sizeof(int));
   cudaMemcpy(h_z, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
+  checkErrors("copy data from device");
 
   // std::cout << "a after cuda" << '\n';
   //
