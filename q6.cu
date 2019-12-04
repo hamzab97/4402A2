@@ -16,6 +16,7 @@ __global__ void minplus(int n, int* x, int *y)
 		for (int k = 0; k < n; k++){
 			x[i*n + j] = min(x[i*n + j], y[i*n + k] + y[k * n + j]);
 		}
+    std::cout << "i: " << i << " j: " << "value is " << x[i*n + j] << '\n';
 	}
 }
 
@@ -62,9 +63,10 @@ int main(void)
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++){
       int ran = rand()%(30-0 + 1) + 0;
-      std::cout << "ran is %d"<< ran << '\n';
+      // std::cout << "ran is %d"<< ran << '\n';
       a[i*N + j] = ran;
       b[i*N + j] = ran;
+      std::cout << "i: " << i << " j: " << "value is " << a[i*n + j] << '\n';
     }
 
   }
@@ -99,7 +101,7 @@ int main(void)
   // int maxError = 0.0f;
   for (int i = 0; i < N; i++){
     for (int j = 0; j < N; j++){
-      std::cout << h_z[i*N + j] << '\n';
+      std::cout << "i: " << i << " j: " << "value is " << h_z[i*n + j] << '\n';
     }
   }
     // maxError = max(maxError, abs(y[i]-4.0f));
