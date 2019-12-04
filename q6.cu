@@ -28,9 +28,12 @@ int main(void)
   cudaMalloc(&d_b, N*sizeof(int));
 
   for (int i = 0; i < N; i++) {
-    int ran = rand();
-    a[i] = ran;
-    b[i] = ran;
+    for (int j = 0; j < N; j++){
+      int ran = rand()%(10-0 + 1) + 0;
+      a[i*N + j] = ran;
+      b[i*N + j] = ran;
+    }
+
   }
   std::cout << "a before cuda" << '\n';
   // int maxError = 0.0f;
