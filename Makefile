@@ -10,7 +10,7 @@ SRCCC =
 SRCCU = q6.cu
 
 ### NVCCFLAGS = -c -O2 --compiler-bindir /usr/bin//gcc-4.8
-NVCCFLAGS = -c -O2 --compiler-bindir /usr/bin/
+NVCCFLAGS = -c -O2 -ccbin cuda-gcc
 
 EXE = q6
 
