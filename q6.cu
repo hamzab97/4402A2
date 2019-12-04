@@ -7,7 +7,7 @@ __global__ void minplus(int N, int* a, int *b)
 //multiply a and b, store result in c, copy result back to a after
 //min plus is c(i, j) = min from k = 1 to k = n (a(i,k) + b(k,j))
 {
-  printf("N= %d\n", N);
+  // printf("N= %d\n", N);
   int j = threadIdx.y + (blockIdx.y * blockDim.y); //get the row
 	int i= threadIdx.x + (blockIdx.x * blockDim.x); //get the col
 	if (i < N and j < N){
@@ -31,6 +31,13 @@ int main(void)
     b[i] = a[i];
   }
 
+  // int maxError = 0.0f;
+  for (int i = 0; i < N; i++){
+    for (int j = 0; j < N; j++){
+      std::cout << a[i*N + j] << '\n';
+    }
+  }
+  
   cudaMemcpy(d_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
   cudaMemcpy(d_b, b, N*sizeof(int), cudaMemcpyHostToDevice);
 
