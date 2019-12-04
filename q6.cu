@@ -16,7 +16,7 @@ __global__ void minplus(int n, int* x, int *y)
 		for (int k = 0; k < n; k++){
 			x[i*n + j] = min(x[i*n + j], y[i*n + k] + y[k * n + j]);
 		}
-    std::cout << "i: " << i << " j: " << "value is " << x[i*n + j] << '\n';
+    printf("i: %d. j: %d. value is: %d\n", i, j, x[i*n + j]);
 	}
 }
 
