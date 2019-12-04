@@ -44,7 +44,7 @@ int main(void)
   // int maxError = 0.0f;
   for (int i = 0; i < N; i++){
     for (int j = 0; j < N; j++){
-      std::std::cout << a[(i * N) + j] << '\n'[j==N-1];
+      std::cout << a[(i * N) + j] << '\n'[j==N-1];
     }
   }
     // maxError = max(maxError, abs(y[i]-4.0f));
