@@ -50,7 +50,7 @@ void checkErrors(char *label)
 int main(void)
 {
   std::cout << "started " << '\n';
-  int N = 6;
+  int N = 2;
   int *a, *b, *d_a, *d_b;
   a = (int*)malloc(N*sizeof(int));
   b = (int*)malloc(N*sizeof(int));
@@ -67,13 +67,13 @@ int main(void)
     }
 
   }
-  // std::cout << "a before cuda" << '\n';
-  // // int maxError = 0.0f;
-  // for (int i = 0; i < N; i++){
-  //   for (int j = 0; j < N; j++){
-  //     std::cout << a[i*N + j] << '\n';
-  //   }
-  // }
+  std::cout << "a before cuda" << '\n';
+  // int maxError = 0.0f;
+  for (int i = 0; i < N; i++){
+    for (int j = 0; j < N; j++){
+      std::cout << a[i*N + j] << '\n';
+    }
+  }
 
   cudaMemcpy(d_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
   cudaMemcpy(d_b, b, N*sizeof(int), cudaMemcpyHostToDevice);
@@ -93,20 +93,20 @@ int main(void)
   cudaMemcpy(h_z, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
   checkErrors("copy data from device");
 
-  // std::cout << "a after cuda" << '\n';
-  //
-  // // int maxError = 0.0f;
-  // for (int i = 0; i < N; i++){
-  //   for (int j = 0; j < N; j++){
-  //     std::cout << a[i*N + j] << '\n';
-  //   }
-  // }
+  std::cout << "a after cuda" << '\n';
+
+  // int maxError = 0.0f;
+  for (int i = 0; i < N; i++){
+    for (int j = 0; j < N; j++){
+      std::cout << a[i*N + j] << '\n';
+    }
+  }
     // maxError = max(maxError, abs(y[i]-4.0f));
 
 		// printf(a[i]);
 	// printf("Max error: %f\n", maxError);
 
-
+  std::cout << "done printing" << '\n';
   cudaFree(d_a);
   cudaFree(d_b);
   free(h_z);
