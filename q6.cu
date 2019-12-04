@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <cstdio>
 
+// number of threads per block
+static int numThreadsPerBlock = 256;
 
 __global__ void minplus(int N, int* a, int *b)
 //multiply a and b, store result in c, copy result back to a after
@@ -24,8 +26,8 @@ int main(void)
   int *a, *b, *d_a, *d_b;
   a = (int*)malloc(N*sizeof(int));
   b = (int*)malloc(N*sizeof(int));
-  cudaMalloc(&d_a, N*sizeof(int));
-  cudaMalloc(&d_b, N*sizeof(int));
+  cudaMalloc((void**)&d_a, N*sizeof(int));
+  cudaMalloc((void**)&d_b, N*sizeof(int));
 
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++){
@@ -49,12 +51,13 @@ int main(void)
   std::cout << "called cuda" << '\n';
 
   // Perform minplus
+  int numBlocks = (N+numThreadsPerBlock-1) / numThreadsPerBlock;
 	for (int i = 0; i < N; i++){
-		  minplus<<<(N+255)/256, 256>>>(N, d_a, d_b);
+		  minplus<<<numBlocks, numThreadsPerBlock>>>(N, d_a, d_b);
 	}
 
-
-  cudaMemcpy(a, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
+  int *h_z = (int*)malloc(N*sizeof(int));
+  cudaMemcpy(h_z, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
 
   // std::cout << "a after cuda" << '\n';
   //
@@ -72,6 +75,7 @@ int main(void)
 
   cudaFree(d_a);
   cudaFree(d_b);
+  free(h_z)
   free(a);
   free(b);
 
