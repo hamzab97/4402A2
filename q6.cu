@@ -75,7 +75,7 @@ int main(void)
 
   cudaFree(d_a);
   cudaFree(d_b);
-  free(h_z)
+  free(h_z);
   free(a);
   free(b);
 
