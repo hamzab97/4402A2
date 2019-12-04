@@ -62,6 +62,7 @@ int main(void)
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++){
       int ran = rand()%(30-0 + 1) + 0;
+      std::cout << "ran is %d", ran << '\n';
       a[i*N + j] = ran;
       b[i*N + j] = ran;
     }
@@ -98,7 +99,7 @@ int main(void)
   // int maxError = 0.0f;
   for (int i = 0; i < N; i++){
     for (int j = 0; j < N; j++){
-      std::cout << a[i*N + j] << '\n';
+      std::cout << h_z[i*N + j] << '\n';
     }
   }
     // maxError = max(maxError, abs(y[i]-4.0f));
