@@ -6,8 +6,8 @@ __global__ void minplus(int N, int* a, int *b)
 //multiply a and b, store result in c, copy result back to a after
 //min plus is c(i, j) = min from k = 1 to k = n (a(i,k) + b(k,j))
 {
-  int j = threadIdx.y + (blockId.y * blockDim.y); //get the row
-	int i= threadIdx.x + (blockId.x * blockDim.x); //get the col
+  int j = threadIdx.y + (blockIdx.y * blockDim.y); //get the row
+	int i= threadIdx.x + (blockIdx.x * blockDim.x); //get the col
 	if (i < N and j < N){
 		for (int k = 0; k < N; k++){
 			a[i][j] = min(a[i][j], b[i][k] + b[k][j]);
