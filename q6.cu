@@ -11,7 +11,7 @@ __global__ void minplus(int N, int* a, int *b)
 	int i= threadIdx.x + (blockIdx.x * blockDim.x); //get the col
 	if (i < N and j < N){
 		for (int k = 0; k < N; k++){
-			a[i][j] = min(a[i][j], b[i][k] + b[k][j]);
+			a[i*N + j] = min(a[i*N + j], b[i*N + k] + b[k * N + j]);
 		}
 	}
 }
