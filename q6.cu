@@ -19,6 +19,7 @@ __global__ void minplus(int N, int* a, int *b)
 
 int main(void)
 {
+  std::cout << "started " << '\n';
   int N = 4;
   int *a, *b, *d_a, *d_b;
   a = (int*)malloc(N*sizeof(int));
@@ -30,16 +31,18 @@ int main(void)
     a[i] = rand();
     b[i] = a[i];
   }
-
+  std::cout << "a before cuda" << '\n';
   // int maxError = 0.0f;
   for (int i = 0; i < N; i++){
     for (int j = 0; j < N; j++){
       std::cout << a[i*N + j] << '\n';
     }
   }
-  
+
   cudaMemcpy(d_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
   cudaMemcpy(d_b, b, N*sizeof(int), cudaMemcpyHostToDevice);
+
+  std::cout << "called cuda" << '\n';
 
   // Perform minplus
 	for (int i = 0; i < N; i++){
@@ -48,6 +51,8 @@ int main(void)
 
 
   cudaMemcpy(a, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
+
+  std::cout << "a after cuda" << '\n';
 
   // int maxError = 0.0f;
   for (int i = 0; i < N; i++){
@@ -65,4 +70,6 @@ int main(void)
   cudaFree(d_b);
   free(a);
   free(b);
+
+  std::cout << "fnished" << '\n';
 }
