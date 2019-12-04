@@ -5,7 +5,7 @@
 // number of threads per block
 static int numThreadsPerBlock = 256;
 
-__global__ void minplus(int N, int* a, int *b)
+__global__ void minplus(int N, int* x, int *y)
 //multiply a and b, store result in c, copy result back to a after
 //min plus is c(i, j) = min from k = 1 to k = n (a(i,k) + b(k,j))
 {
@@ -14,7 +14,7 @@ __global__ void minplus(int N, int* a, int *b)
 	int i= threadIdx.x + (blockIdx.x * blockDim.x); //get the col
 	if (i < N and j < N){
 		for (int k = 0; k < N; k++){
-			a[i*N + j] = min(a[i*N + j], b[i*N + k] + b[k * N + j]);
+			x[i*N + j] = min(a[i*N + j], y[i*N + k] + y[k * N + j]);
 		}
 	}
 }
