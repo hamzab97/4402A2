@@ -50,7 +50,7 @@ void checkErrors(char *label)
 int main(void)
 {
   std::cout << "started " << '\n';
-  int N = 2;
+  int N = 4;
   int *a, *b, *d_a, *d_b;
   a = (int*)malloc(N*sizeof(int));
   b = (int*)malloc(N*sizeof(int));
@@ -61,7 +61,7 @@ int main(void)
 
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++){
-      int ran = rand()%(10-0 + 1) + 0;
+      int ran = rand()%(30-0 + 1) + 0;
       a[i*N + j] = ran;
       b[i*N + j] = ran;
     }
