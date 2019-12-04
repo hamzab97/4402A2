@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <cstdio>
+
 
 __global__ void minplus(int N, int* a, int *b)
 //multiply a and b, store result in c, copy result back to a after
@@ -15,7 +17,7 @@ __global__ void minplus(int N, int* a, int *b)
 
 int main(void)
 {
-  int N = 32;
+  int N = 4;
   int *a, *b, *d_a, *d_b;
   a = (int*)malloc(N*sizeof(int));
   b = (int*)malloc(N*sizeof(int));
