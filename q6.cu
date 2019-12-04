@@ -66,7 +66,7 @@ int main(void)
       // std::cout << "ran is %d"<< ran << '\n';
       a[i*N + j] = ran;
       b[i*N + j] = ran;
-      std::cout << "i: " << i << " j: " << "value is " << a[i*N + j] << '\n';
+      std::cout << "i: " << i << " j: " <<j<< "value is " << a[i*N + j] << '\n';
     }
 
   }
@@ -101,7 +101,7 @@ int main(void)
   // int maxError = 0.0f;
   for (int i = 0; i < N; i++){
     for (int j = 0; j < N; j++){
-      std::cout << "i: " << i << " j: " << "value is " << h_z[i*N + j] << '\n';
+      std::cout << "i: " << i << " j: " <<j<< "value is " << h_z[i*N + j] << '\n';
     }
   }
     // maxError = max(maxError, abs(y[i]-4.0f));
