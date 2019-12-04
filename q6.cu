@@ -62,7 +62,7 @@ int main(void)
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++){
       int ran = rand()%(30-0 + 1) + 0;
-      std::cout << "ran is %d", ran << '\n';
+      std::cout << "ran is %d"<< ran << '\n';
       a[i*N + j] = ran;
       b[i*N + j] = ran;
     }
