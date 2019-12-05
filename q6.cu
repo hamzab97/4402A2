@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <cstdio>
 
-// number of threads per block
-static int numThreadsPerBlock = 256;
 
 __global__ void minplus(int n, int* x, int *y)
 //multiply a and b, store result in c, copy result back to a after
@@ -15,8 +13,9 @@ __global__ void minplus(int n, int* x, int *y)
 	if (i < n and j < n){
 		for (int k = 0; k < n; k++){
 			x[i*n + j] = min(x[i*n + j], y[i*n + k] + y[k * n + j]);
+      printf("i: %d. j: %d. k: %d. value is: %d\n", i, j, k, x[i*n + j]);
 		}
-    printf("i: %d. j: %d. value is: %d\n", i, j, x[i*n + j]);
+
 	}
 }
 
@@ -85,11 +84,22 @@ int main(void)
 
   std::cout << "called cuda" << '\n';
 
-  // Perform minplus
+  // number of threads per block
+  int numThreadsPerBlock = 16;
   int numBlocks = (N+numThreadsPerBlock-1) / numThreadsPerBlock;
+
+  //setup kernal launch parameters
+  dim3 THREADS(numThreadsPerBlock, numThreadsPerBlock);
+  dim3 BLOCKS(numBlocks, numBlocks)
+
+  // minplus<<<BLOCKS, THREADS>>>(N, d_a, d_b);
+
 	for (int i = 0; i < N; i++){
+    // Perform minplus
 		  minplus<<<numBlocks, numThreadsPerBlock>>>(N, d_a, d_b);
       checkErrors("compute on device");
+      cudaMemcpy(a, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
+      checkErrors("copy data from device");
 	}
 
   int *h_z = (int*)malloc(N*sizeof(int));
