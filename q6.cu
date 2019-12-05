@@ -90,7 +90,7 @@ int main(void)
 
   //setup kernal launch parameters
   dim3 THREADS(numThreadsPerBlock, numThreadsPerBlock);
-  dim3 BLOCKS(numBlocks, numBlocks)
+  dim3 BLOCKS(numBlocks, numBlocks);
 
   // minplus<<<BLOCKS, THREADS>>>(N, d_a, d_b);
 
