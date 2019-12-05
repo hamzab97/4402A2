@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <cstdio>
-
+#include <chrono>
 
 __global__ void minplus(int n, int* x, int *y)
 //multiply a and b, store result in c, copy result back to a after
@@ -46,6 +46,15 @@ void checkErrors(char *label)
   }
 }
 
+void fw(int n, int* path){
+  for (int k = 0; k < n; k++){
+		for (int i = 0; i < n; i++){
+			for (int j = 0; j < n; j++){
+				path[i][j] = min ( path[i][j], path[i][k]+path[k][j] );
+			}
+		}
+	}
+}
 
 int main(void)
 {
@@ -93,7 +102,7 @@ int main(void)
   dim3 BLOCKS(numBlocks, numBlocks);
 
   // minplus<<<BLOCKS, THREADS>>>(N, d_a, d_b);
-
+	auto cuda_t1 = std::chrono::high_resolution_clock::now(); //start timer
 	for (int i = 0; i < N; i++){
     // Perform minplus
 		  minplus<<<numBlocks, numThreadsPerBlock>>>(N, d_a, d_b);
@@ -101,25 +110,39 @@ int main(void)
       cudaMemcpy(a, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
       checkErrors("copy data from device");
 	}
+	auto cuda_t2 = std::chrono::high_resolution_clock::now(); //end timer
 
   int *h_z = (int*)malloc(N*sizeof(int));
   cudaMemcpy(h_z, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
   checkErrors("copy data from device");
 
-  std::cout << "a after cuda" << '\n';
+  std::cout << "cuda finished" << '\n';
 
   // int maxError = 0.0f;
-  for (int i = 0; i < N; i++){
-    for (int j = 0; j < N; j++){
-      std::cout << "i: " << i << " j: " <<j<< "value is " << h_z[i*N + j] << '\n';
-    }
-  }
+  // for (int i = 0; i < N; i++){
+  //   for (int j = 0; j < N; j++){
+  //     std::cout << "i: " << i << " j: " <<j<< "value is " << h_z[i*N + j] << '\n';
+  //   }
+  // }
     // maxError = max(maxError, abs(y[i]-4.0f));
 
 		// printf(a[i]);
 	// printf("Max error: %f\n", maxError);
 
-  std::cout << "done printing" << '\n';
+  // std::cout << "done printing" << '\n';
+
+
+	std::cout << "calling serial FW" << '\n';
+	auto serial_t1 = std::chrono::high_resolution_clock::now(); //end timer
+	fw(N, b);
+	auto serial_t2 = std::chrono::high_resolution_clock::now(); //end timer
+	std::cout << "serial finished" << '\n';
+
+	auto duration_cuda = std::chrono::duration_cast<std::chrono::microseconds>( cuda_t2 - cuda_t1 ).count();
+	auto duration_serial = std::chrono::duration_cast<std::chrono::microseconds>( serial_t2 - serial_t1 ).count();
+
+	std::cout << "cuda duration: "<<duration_cuda << " serial duation: " <<duration_serial << '\n';
+
   cudaFree(d_a);
   cudaFree(d_b);
   free(h_z);
