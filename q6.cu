@@ -109,6 +109,9 @@ int main(void)
       checkErrors("compute on device");
       cudaMemcpy(a, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
       checkErrors("copy data from device");
+
+			cudaMemcpy(d_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
+			checkErrors("copy data to device");
 	}
 	auto cuda_t2 = std::chrono::high_resolution_clock::now(); //end timer
 
