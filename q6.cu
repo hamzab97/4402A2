@@ -50,7 +50,7 @@ void fw(int n, int* path){
   for (int k = 0; k < n; k++){
 		for (int i = 0; i < n; i++){
 			for (int j = 0; j < n; j++){
-				path[i][j] = min ( path[i][j], path[i][k]+path[k][j] );
+				path[i*n + j] = min ( path[i*n + j], path[i*n + k]+path[k*n + j] );
 			}
 		}
 	}
