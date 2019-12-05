@@ -123,9 +123,7 @@ int main(void)
 
   // int maxError = 0.0f;
   // for (int i = 0; i < N; i++){
-  //   for (int j = 0; j < N; j++){
-  //     std::cout << "i: " << i << " j: " <<j<< "value is " << h_z[i*N + j] << '\n';
-  //   }
+
   // }
     // maxError = max(maxError, abs(y[i]-4.0f));
 
@@ -145,6 +143,10 @@ int main(void)
 	auto duration_serial = std::chrono::duration_cast<std::chrono::microseconds>( serial_t2 - serial_t1 ).count();
 
 	std::cout << "cuda duration: "<<duration_cuda << " serial duation: " <<duration_serial << '\n';
+
+	for (int j = 0; j < N; j++){
+		std::cout << "i: " << i << " j: " <<j<< "value from cuda is " << h_z[i*N + j] << " value from serial is " <<b[i*N + j]<< '\n';
+	}
 
   cudaFree(d_a);
   cudaFree(d_b);
