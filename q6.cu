@@ -13,7 +13,7 @@ __global__ void minplus(int n, int* x, int *y)
 	if (i < n and j < n){
 		for (int k = 0; k < n; k++){
 			x[i*n + j] = min(x[i*n + j], y[i*n + k] + y[k * n + j]);
-      printf("i: %d. j: %d. k: %d. value is: %d\n", i, j, k, x[i*n + j]);
+      //printf("i: %d. j: %d. k: %d. value is: %d\n", i, j, k, x[i*n + j]);
 		}
 
 	}
@@ -59,7 +59,7 @@ void fw(int n, int* path){
 int main(void)
 {
   std::cout << "started " << '\n';
-  int N = 4;
+  int N = 32;
   int *a, *b, *d_a, *d_b;
   a = (int*)malloc(N*sizeof(int));
   b = (int*)malloc(N*sizeof(int));
@@ -74,7 +74,7 @@ int main(void)
       // std::cout << "ran is %d"<< ran << '\n';
       a[i*N + j] = ran;
       b[i*N + j] = ran;
-      std::cout << "i: " << i << " j: " <<j<< "value is " << a[i*N + j] << '\n';
+      //std::cout << "i: " << i << " j: " <<j<< "value is " << a[i*N + j] << '\n';
     }
 
   }
@@ -82,7 +82,7 @@ int main(void)
   // int maxError = 0.0f;
   for (int i = 0; i < N; i++){
     for (int j = 0; j < N; j++){
-      std::cout << a[i*N + j] << '\n';
+      //std::cout << a[i*N + j] << '\n';
     }
   }
 
