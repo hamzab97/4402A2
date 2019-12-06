@@ -59,7 +59,7 @@ void fw(int n, int* path){
 int main(void)
 {
   std::cout << "started " << '\n';
-  int N = 16;
+  int N = 8;
   int *a, *b, *d_a, *d_b;
   a = (int*)malloc(N*sizeof(int));
   b = (int*)malloc(N*sizeof(int));
