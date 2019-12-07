@@ -12,16 +12,25 @@ __global__ void minplus(int n, int* x, int *y)
 	int i= threadIdx.x + (blockIdx.x * blockDim.x); //get the col
 
 	//declare shared memory DS
-	extern __shared__ int tile_x[n][n];
+	extern __shared__ int tile_x[blockDim][blockDim];
 
-	tile_x[i][j] = x[i*n + j];
+	int (m = 0; m < n/blockDim+1; ++m){
+		tile_x[threadIdx.x][threadIdx.y] = x[i*n + j];
+
+		int sum = INT_MAX;
+		for (int k = 0; k < blockDim; ++k){
+			sum = min(sum, tile_x[threadIdx.x][k] + tile_x[k][threadIdx.y]);
+		}
+
+	}
+
 
 	__syncthreads();
 
-	for (int k = 0; k < n; k++){
-		y[i*n + j] = min(tile_x[i][j], tile_x[i][k] + tile_x[k][j]);
+	// for (int k = 0; k < n; k++){
+		y[i*n + j] = sum;
     //printf("i: %d. j: %d. k: %d. value is: %d\n", i, j, k, x[i*n + j]);
-	}
+	// }
 
 	// __syncthreads();
 }
