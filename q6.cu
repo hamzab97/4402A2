@@ -10,13 +10,20 @@ __global__ void minplus(int n, int* x, int *y)
   // printf("N= %d\n", N);
   int j = threadIdx.y + (blockIdx.y * blockDim.y); //get the row
 	int i= threadIdx.x + (blockIdx.x * blockDim.x); //get the col
-	if (i < n and j < n){
-		for (int k = 0; k < n; k++){
-			x[i*n + j] = min(x[i*n + j], y[i*n + k] + y[k * n + j]);
-      //printf("i: %d. j: %d. k: %d. value is: %d\n", i, j, k, x[i*n + j]);
-		}
 
+	//declare shared memory DS
+	extern __shared__ int tile_x[n][n];
+
+	tile_x[i][j] = x[i*n + j];
+
+	__syncthreads();
+
+	for (int k = 0; k < n; k++){
+		y[i*n + j] = min(tile_x[i][j], tile_x[i][k] + tile_x[k][j]);
+    //printf("i: %d. j: %d. k: %d. value is: %d\n", i, j, k, x[i*n + j]);
 	}
+
+	// __syncthreads();
 }
 
 
@@ -108,15 +115,17 @@ int main(void)
 		  minplus<<<numBlocks, numThreadsPerBlock>>>(N, d_a, d_b);
       checkErrors("compute on device");
       cudaMemcpy(a, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
+			cudaMemcpy(b, d_b, N*sizeof(int), cudaMemcpyDeviceToHost);
       checkErrors("copy data from device");
 
 			cudaMemcpy(d_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
+			cudaMemcpy(d_b, b, N*sizeof(int), cudaMemcpyHostToDevice);
 			checkErrors("copy data to device");
 	}
 	auto cuda_t2 = std::chrono::high_resolution_clock::now(); //end timer
 
   int *h_z = (int*)malloc(N*sizeof(int));
-  cudaMemcpy(h_z, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
+  cudaMemcpy(h_z, d_b, N*sizeof(int), cudaMemcpyDeviceToHost);
   checkErrors("copy data from device");
 
   std::cout << "cuda finished" << '\n';
@@ -148,7 +157,7 @@ int main(void)
 			std::cout << "i: " << i << " j: " <<j<< "value from cuda is " << h_z[i*N + j] << " value from serial is " <<b[i*N + j]<< '\n';
 		}
 	}
-	
+
   cudaFree(d_a);
   cudaFree(d_b);
   free(h_z);
