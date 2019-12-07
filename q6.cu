@@ -76,8 +76,8 @@ void fw(int n, int* path){
 int main(void)
 {
   // std::cout << "started " << '\n';
-  int N = 1 << rand();
-	if (N%2 != 0) N++;
+  int N = 1 << (2*rand());
+	//if (N%2 != 0) N++;
 	std::cout << "Matrix size is " << N << '\n';
   int *a, *b, *d_a, *d_b;
   a = (int*)malloc(N*sizeof(int));
