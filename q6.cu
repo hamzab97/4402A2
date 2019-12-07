@@ -125,13 +125,13 @@ int main(void)
     // Perform minplus
 		  minplus<<<numBlocks, numThreadsPerBlock>>>(N, d_a, d_b);
       checkErrors("compute on device");
-      cudaMemcpy(a, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
-			cudaMemcpy(b, d_b, N*sizeof(int), cudaMemcpyDeviceToHost);
-      checkErrors("copy data from device");
-
-			cudaMemcpy(d_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
-			cudaMemcpy(d_b, b, N*sizeof(int), cudaMemcpyHostToDevice);
-			checkErrors("copy data to device");
+      // cudaMemcpy(a, d_a, N*sizeof(int), cudaMemcpyDeviceToHost);
+			// cudaMemcpy(b, d_b, N*sizeof(int), cudaMemcpyDeviceToHost);
+      // checkErrors("copy data from device");
+			//
+			// cudaMemcpy(d_a, a, N*sizeof(int), cudaMemcpyHostToDevice);
+			// cudaMemcpy(d_b, b, N*sizeof(int), cudaMemcpyHostToDevice);
+			// checkErrors("copy data to device");
 	}
 	auto cuda_t2 = std::chrono::high_resolution_clock::now(); //end timer
 
