@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <chrono>
 
+#define BLOCK_SIZE 16
 __global__ void minplus(int n, int* x, int *y)
 //multiply a and b, store result in c, copy result back to a after
 //min plus is c(i, j) = min from k = 1 to k = n (a(i,k) + b(k,j))
@@ -12,13 +13,13 @@ __global__ void minplus(int n, int* x, int *y)
 	int i= threadIdx.x + (blockIdx.x * blockDim.x); //get the col
 
 	//declare shared memory DS
-	extern __shared__ int tile_x[blockDim][blockDim];
+	__shared__ int tile_x[BLOCK_SIZE][BLOCK_SIZE];
 
-	int (int m = 0; m < n/blockDim+1; ++m){
+	int (int m = 0; m < n/(BLOCK_SIZE+1); ++m){
 		tile_x[threadIdx.x][threadIdx.y] = x[i*n + j];
 
 		int sum = INT_MAX;
-		for (int k = 0; k < blockDim; ++k){
+		for (int k = 0; k < BLOCK_SIZE; ++k){
 			sum = min(sum, tile_x[threadIdx.x][k] + tile_x[k][threadIdx.y]);
 		}
 
