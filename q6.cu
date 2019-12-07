@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <cstdio>
 #include <chrono>
+#include <ctime>
 
 #define BLOCK_SIZE 16
 __global__ void minplus(int n, int* x, int *y)
@@ -76,6 +77,7 @@ void fw(int n, int* path){
 int main(void)
 {
   // std::cout << "started " << '\n';
+  srand(time(NULL));
   int N = 1 << (2*rand());
 	//if (N%2 != 0) N++;
 	std::cout << "Matrix size is " << N << '\n';
