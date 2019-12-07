@@ -14,11 +14,11 @@ __global__ void minplus(int n, int* x, int *y)
 
 	//declare shared memory DS
 	__shared__ int tile_x[BLOCK_SIZE][BLOCK_SIZE];
-
+	int sum = INT_MAX;
 	for (int m = 0; m < n/(BLOCK_SIZE+1); ++m){
 		tile_x[threadIdx.x][threadIdx.y] = x[i*n + j];
 
-		int sum = INT_MAX;
+
 		for (int k = 0; k < BLOCK_SIZE; ++k){
 			sum = min(sum, tile_x[threadIdx.x][k] + tile_x[k][threadIdx.y]);
 		}
