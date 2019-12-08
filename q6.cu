@@ -79,6 +79,7 @@ int main(void)
   // std::cout << "started " << '\n';
   srand(time(NULL));
   int N = 1 << (2*rand());
+  N = 8;
 	//if (N%2 != 0) N++;
 	std::cout << "Matrix size is " << N << '\n';
   int *a, *b, *d_a, *d_b;
